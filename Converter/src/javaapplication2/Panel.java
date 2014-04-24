@@ -25,24 +25,52 @@ package javaapplication2;
           public static JMenuItem menuItem2;
           public static JMenuItem menuItem3;
           public static JMenu menu;
-          public static JTextField tempTextField;
+          public static JTextField convertFromTextField;
+          public static JTextField convertToTextField;
+          
+         
+          
           public Panel ()
           {
-              
-            tempTextField = new JTextField("Enter USD");
+            // first create font for text fields
             Font f1 = new Font("Helvetica", Font.ITALIC, 14);
-            tempTextField.setFont(f1);
-            tempTextField.setAlignmentY(TOP_ALIGNMENT);
-            tempTextField.setAlignmentX(LEFT_ALIGNMENT);
-            add(tempTextField);
             
-            add(new JLabel("Convert to: "));
+            add(new JLabel("United States Dollar "));
+            convertFromTextField = new JTextField("                ");
+            convertFromTextField.setFont(f1); // set font
+            convertFromTextField.setAlignmentY(TOP_ALIGNMENT);
+            convertFromTextField.setAlignmentX(LEFT_ALIGNMENT);
+            add(convertFromTextField);
+            
             DefaultComboBoxModel model = new DefaultComboBoxModel();
+            // use flex JSON for these
+            model.addElement("USD");
             model.addElement("Euro");
             model.addElement("Yen");
-            model.addElement("Macedonian Denar");
             JComboBox comboBox = new JComboBox(model);
             add(comboBox);
+            
+            add(new JLabel("       Canadian Dollar       "));
+              
+            convertToTextField = new JTextField("                ");
+            convertToTextField.setFont(f1);
+            convertToTextField.setAlignmentY(TOP_ALIGNMENT);
+            convertToTextField.setAlignmentX(LEFT_ALIGNMENT);
+            // convertToTextField.setPrefferedSize;
+            convertToTextField.setAlignmentY(BOTTOM_ALIGNMENT);
+            convertToTextField.setAlignmentX(BOTTOM_ALIGNMENT);
+            convertToTextField.disable();
+          //  convertToTextField.isShowing();
+            add(convertToTextField);
+            
+            DefaultComboBoxModel model2 = new DefaultComboBoxModel();
+            model2.addElement("CND");
+            model2.addElement("Euro");
+            model2.addElement("Yen");
+            JComboBox comboBox2 = new JComboBox(model2);
+            add(comboBox2);
+           
+            add(new JLabel("Exchange rate is: 1.5 "));
             
              /* CREATE CONVERT BUTTON */  
 	    convertButton = new JButton("CONVERT"); 
@@ -50,26 +78,6 @@ package javaapplication2;
 	    // register the current panel as listener for the buttons
             convertButton.setActionCommand("Convert");
 	    convertButton.addActionListener(this); 
-            
-            Font f2 = new Font("Helvetica", Font.ITALIC, 15);
-            JTextField tempTextField2 = new JTextField("           ");
-            tempTextField2.setFont(f2);
-           // tempTextField2.setPrefferedSize;
-            tempTextField2.setAlignmentY(BOTTOM_ALIGNMENT);
-            tempTextField2.setAlignmentX(BOTTOM_ALIGNMENT);
-            tempTextField2.disable();
-          //  tempTextField2.isShowing();
-            add(tempTextField2);
-            
-            add(new JLabel("Exchange rate: "));
-            JTextField tempTextField3 = new JTextField("           ");
-            tempTextField3.setFont(f2);
-           // tempTextField2.setPrefferedSize;
-            tempTextField3.setAlignmentY(BOTTOM_ALIGNMENT);
-            tempTextField3.setAlignmentX(BOTTOM_ALIGNMENT);
-            tempTextField3.disable();
-          //  tempTextField2.isShowing();
-            add(tempTextField3);
 
             /* CREATE MENU */
             menu = new JMenu("Menu");
@@ -78,6 +86,9 @@ package javaapplication2;
             menuBar.add(menu);
             
             //a group of JMenuItems
+            
+            /* menu about 
+               - dialog box containing: App title, your name, "OK" button*/
             menuItem = new JMenuItem("About",
                                      KeyEvent.VK_A);
             menuItem.setAccelerator(KeyStroke.getKeyStroke(
@@ -85,7 +96,9 @@ package javaapplication2;
             menuItem.getAccessibleContext().setAccessibleDescription("About");
             menuItem.setActionCommand("About");
             menu.add(menuItem); // add "About" to menu
-
+            /* menu Update 
+               - Read RSS feed for FromCurrency
+               - Build HashMap "ToCurrency/FromCurrency to Exchange Rate */
             menuItem2 = new JMenuItem("Update",
                                      KeyEvent.VK_U);
             menuItem2.setAccelerator(KeyStroke.getKeyStroke(
@@ -93,7 +106,9 @@ package javaapplication2;
             menuItem2.getAccessibleContext().setAccessibleDescription("Update");
             menuItem2.setActionCommand("Update");
             menu.add(menuItem2); // add "Update" to menu
-
+            /* menu Exit 
+               - Clean Up application
+               - Exit Application*/
             menuItem3 = new JMenuItem("Exit",KeyEvent.VK_E);
             menuItem3.setAccelerator(KeyStroke.getKeyStroke(
                     KeyEvent.VK_E, ActionEvent.ALT_MASK));
@@ -131,11 +146,15 @@ package javaapplication2;
 	  ///////////// main ////////////////////////////
 
 	  public static void main(String[] args) {
-              
+            // create a JFrame instance of our interface
 	    JFrame f = new Interface("Currency Converter");
+            // show interface
 	    f.show();
 	  } //main
 
+          /* Function onExit () no argument, void return value
+             - Cleans Up application
+             - Exits Application safely */
           public void onExit ()
           {
                 System.exit(0);
@@ -152,7 +171,7 @@ package javaapplication2;
               }
               else if ("About".equals(e.getActionCommand())) // if About pressed
               {
-                   
+                  //Interface.aboutDialog();
               }
               else // if user pressed Exit from menu
               {
