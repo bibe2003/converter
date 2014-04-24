@@ -5,12 +5,11 @@
  */
 
 package javaapplication2;
+import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Font;
 import javax.swing.*;
 import java.awt.event.*;
 import static javaapplication2.Panel.menuBar;
-
 
 /**
  *
@@ -20,7 +19,7 @@ public class Interface extends JFrame {
         
 	  public Interface(String s) {
 		setTitle(s);
-		setSize(180 ,200); // default size is 0,0
+		setSize(170 ,230); // default size is 0,0
 		setLocation(100,200); // default is 0,0 (top left corner)
                 
                 // Window Listeners
@@ -41,17 +40,4 @@ public class Interface extends JFrame {
                 
 	  }
           
-    
-          
 }
-
-
-/*   /**
-     * @param args the command line arguments
-     
-      public static void main(String[] args) {
-        // TODO code application logic here
-	    JFrame f = new Interface();
-	    f.show();
-	}*/
-
