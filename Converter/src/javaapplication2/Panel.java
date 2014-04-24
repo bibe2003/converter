@@ -1,14 +1,7 @@
 package javaapplication2;
 
-	/*************************************************************
-         * @file: TextPanel.java 
-	 * @source: adapted from Horstmann and Cornell, Core Java
-	 * @history: Visualization Course, Spring 2003, Chee Yap
-	 *************************************************************/
-
 	import java.awt.*;
 	import java.awt.event.*;
-import java.text.AttributedString;
 	import javax.swing.*;
 	
 	/*************************************************************
@@ -36,7 +29,6 @@ import java.text.AttributedString;
           {
             // first create font for text fields
             Font f1 = new Font("Helvetica", Font.ITALIC, 14);
-            
             /************************************************
             ** Text Field for entering base currency value **
             ************************************************/
@@ -45,9 +37,9 @@ import java.text.AttributedString;
             convertFromTextField.setFont(f1); // set font
             add(convertFromTextField);
             
-            /**********************************************
-            ** Pull down menu for picking base currency  **
-            **********************************************/
+            /****************************************************
+            **        Pull down menu for base currency         **
+            ****************************************************/
             DefaultComboBoxModel model = new DefaultComboBoxModel();
             // use flex JSON for these
             model.addElement("USD");
@@ -55,7 +47,7 @@ import java.text.AttributedString;
             model.addElement("Yen");
             JComboBox comboBox = new JComboBox(model);
             add(comboBox);
-            
+          
             /****************************************************
             ** Text field for entering the base currency value **
             ****************************************************/
@@ -84,6 +76,9 @@ import java.text.AttributedString;
 	    add(convertButton, BorderLayout.CENTER);  // add button to current panel
             convertButton.setActionCommand("Convert"); // name of the event action
 	    convertButton.addActionListener(this); // listen for an event (click)
+	    // register the current panel as listener for the buttons
+            convertButton.setActionCommand("Convert");
+	    convertButton.addActionListener(this); 
 
             /****************************************************
             **                 Create Menu                     **
@@ -92,7 +87,6 @@ import java.text.AttributedString;
             menu.setMnemonic(KeyEvent.VK_A);
             menu.getAccessibleContext().setAccessibleDescription("Menu");
             menuBar.add(menu); // add menu to panel
-            
             /**************************************************
             **         Create a group of JMenu items         **
             **************************************************/ 
@@ -135,6 +129,8 @@ import java.text.AttributedString;
             // create a JFrame instance of our interface
 	    JFrame f = new Interface("Currency Converter");
 	    f.show();  // show interface
+            // show interface
+	    f.show();
 	  } //main
           
           /******************************************************
@@ -142,6 +138,11 @@ import java.text.AttributedString;
           ** - Cleans Up application                           **
           ** - Exits Application safely                        **
           *******************************************************/ 
+
+
+          /* Function onExit () no argument, void return value
+             - Cleans Up application
+             - Exits Application safely */
           public void onExit ()
           {
               // clean up application here
