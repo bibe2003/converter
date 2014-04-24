@@ -5,12 +5,9 @@ package javaapplication2;
 	import javax.swing.*;
 	
 	/*************************************************************
-         *	Panel Class (with main method)
+         *	Panel Class (with main method)                       *
 	 *************************************************************/
-	
 	class Panel extends JPanel implements ActionListener {
-	  // override the paintComponent method
-	  // THE MAIN DEMO OF THIS EXAMPLE:
 	 // members:
 	  private JButton convertButton;
           JMenu m = new JMenu("Color");
@@ -21,6 +18,7 @@ package javaapplication2;
           public static JMenu menu;
           public static JTextField convertFromTextField;
           public static JTextField convertToTextField;
+          // string for about menu 
           public String info = "\n          Currency Converter™ "
                   + "\n\nDeveloped by Biljana Miloshevska            "
                   + "\n\n      Arkansas State University\n\n";
@@ -30,7 +28,7 @@ package javaapplication2;
             // first create font for text fields
             Font f1 = new Font("Helvetica", Font.ITALIC, 14);
             /************************************************
-            ** Text Field for entering base currency value **
+            *  Text Field for entering base currency value  *
             ************************************************/
             add(new JLabel("United States Dollar "));
             convertFromTextField = new JTextField("                ");
@@ -38,7 +36,7 @@ package javaapplication2;
             add(convertFromTextField);
             
             /****************************************************
-            **        Pull down menu for base currency         **
+            *         Pull down menu for base currency          *
             ****************************************************/
             DefaultComboBoxModel model = new DefaultComboBoxModel();
             // use flex JSON for these
@@ -49,7 +47,7 @@ package javaapplication2;
             add(comboBox);
           
             /****************************************************
-            ** Text field for entering the base currency value **
+            *  Text field for entering the base currency value  *
             ****************************************************/
             add(new JLabel("Canadian Dollar"));
             convertToTextField = new JTextField("                ");
@@ -58,7 +56,7 @@ package javaapplication2;
             add(convertToTextField);
             
             /****************************************************
-            ** Pull down menu for currency to which we convert **
+            *  Pull down menu for currency to which we convert  *
             ****************************************************/
             DefaultComboBoxModel model2 = new DefaultComboBoxModel();
             model2.addElement("CND"); 
@@ -70,7 +68,7 @@ package javaapplication2;
             add(new JLabel("Exchange rate is: 1.5 ")); // print out exchange rate
             
             /****************************************************
-            **                 Convert Button                  **
+            *                  Convert Button                   *
             ****************************************************/ 
 	    convertButton = new JButton("CONVERT"); 
 	    add(convertButton, BorderLayout.CENTER);  // add button to current panel
@@ -81,14 +79,14 @@ package javaapplication2;
 	    convertButton.addActionListener(this); 
 
             /****************************************************
-            **                 Create Menu                     **
+            *                  Create Menu                      *
             ****************************************************/ 
             menu = new JMenu("Menu");
             menu.setMnemonic(KeyEvent.VK_A);
             menu.getAccessibleContext().setAccessibleDescription("Menu");
             menuBar.add(menu); // add menu to panel
             /**************************************************
-            **         Create a group of JMenu items         **
+            *          Create a group of JMenu items          *
             **************************************************/ 
             /* menu about                                                **
             ** - dialog box containing: App title, your name, "OK" button*/
@@ -115,7 +113,7 @@ package javaapplication2;
             menu.add(exit); // add "Exit" to menu
             
             /**************************************************
-            **      Action listener for each menu item       **
+            *       Action listener for each menu item        *
             **************************************************/ 
             about.addActionListener(this);
             update.addActionListener(this);
@@ -134,15 +132,10 @@ package javaapplication2;
 	  } //main
           
           /******************************************************
-          ** Function onExit () no argument, void return value **
-          ** - Cleans Up application                           **
-          ** - Exits Application safely                        **
+          *  Function onExit () no argument, void return value  *
+          *  - Cleans Up application                            *
+          *  - Exits Application safely                         *
           *******************************************************/ 
-
-
-          /* Function onExit () no argument, void return value
-             - Cleans Up application
-             - Exits Application safely */
           public void onExit ()
           {
               // clean up application here
@@ -150,8 +143,8 @@ package javaapplication2;
           }
 
           /******************************************************
-          ** Get action performed from menu items and call     **
-          ** appropriate functions.                            **
+          *   Get action performed from menu items and call     *
+          *   appropriate functions.                            *
           *******************************************************/ 
           @Override
           public void actionPerformed(ActionEvent e) {
@@ -167,7 +160,7 @@ package javaapplication2;
               // if About pressed
               else if ("About".equals(e.getActionCommand())) 
               {
-                  // show about dialog 
+                  // create and show about dialog 
                   JOptionPane.showMessageDialog(null, info, "About", 1);
               }
               // if Exit pressed
