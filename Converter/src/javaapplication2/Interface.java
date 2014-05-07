@@ -5,7 +5,6 @@
  */
 
 package javaapplication2;
-import java.awt.BorderLayout;
 import java.awt.Container;
 import javax.swing.*;
 import java.awt.event.*;

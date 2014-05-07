@@ -2,6 +2,7 @@ package javaapplication2;
 
 	import java.awt.*;
 	import java.awt.event.*;
+import java.text.NumberFormat;
 	import javax.swing.*;
 	
 	/*************************************************************
@@ -18,6 +19,15 @@ package javaapplication2;
           public static JMenu menu;
           public static JTextField convertFromTextField;
           public static JTextField convertToTextField;
+          public static DefaultComboBoxModel model; // "From" pull down menu
+          public static DefaultComboBoxModel model2; // "To" pull down menu
+          public static JComboBox To;
+          public static JComboBox From;
+          public static ExchangeRates fromRate = new ExchangeRates ();
+          public static String from = "USD";
+          public static String to = "CAD";
+          public static double amount = 1;
+          public static JLabel myLabel;
           // string for about menu 
           public String info = "\n          Currency Converter™ "
                   + "\n\nDeveloped by Biljana Miloshevska            "
@@ -30,42 +40,72 @@ package javaapplication2;
             /************************************************
             *  Text Field for entering base currency value  *
             ************************************************/
-            add(new JLabel("United States Dollar "));
-            convertFromTextField = new JTextField("                ");
+            add(new JLabel("Amount         Currency"));
+            convertFromTextField = new JTextField("");
             convertFromTextField.setFont(f1); // set font
+            convertFromTextField.setPreferredSize(new Dimension(72,25));
             add(convertFromTextField);
+            
             
             /****************************************************
             *         Pull down menu for base currency          *
             ****************************************************/
-            DefaultComboBoxModel model = new DefaultComboBoxModel();
+            model = new DefaultComboBoxModel();
             // use flex JSON for these
-            model.addElement("USD");
-            model.addElement("Euro");
-            model.addElement("Yen");
+            // give default values for these or check if they r not null 
+            // make sure they r initialized properly
+            
             JComboBox comboBox = new JComboBox(model);
+            comboBox.setActionCommand("From");
+            comboBox.addActionListener(this);
             add(comboBox);
           
             /****************************************************
             *  Text field for entering the base currency value  *
             ****************************************************/
-            add(new JLabel("Canadian Dollar"));
-            convertToTextField = new JTextField("                ");
+            add(new JLabel("Amount         Currency"));
+            convertToTextField = new JTextField("");
             convertToTextField.setFont(f1);
-            convertToTextField.disable();
+            convertToTextField.setForeground(Color.black);
+            convertToTextField.setBackground(Color.white);
+            convertToTextField.setEditable(false);
+            convertToTextField.setPreferredSize(new Dimension(72,25));
             add(convertToTextField);
             
             /****************************************************
             *  Pull down menu for currency to which we convert  *
             ****************************************************/
-            DefaultComboBoxModel model2 = new DefaultComboBoxModel();
-            model2.addElement("CND"); 
-            model2.addElement("Euro");
-            model2.addElement("Yen");
+            model2 = new DefaultComboBoxModel();
             JComboBox comboBox2 = new JComboBox(model2);
+            
+            comboBox2.setActionCommand("To");
+            comboBox2.addActionListener(this);
             add(comboBox2);
             
-            add(new JLabel("Exchange rate is: 1.5 ")); // print out exchange rate
+            /************************************************
+            *  Read JSON file to populate pull down menus   *
+            ************************************************/
+            CCCodes myFile = new CCCodes();
+            myFile.readFile("config.json");
+            
+            // Populate menus
+            for (int i = 0; i < 90; i++)
+            {
+                String[] tokens = CCCodes.stdMap.get(i).toString().split("=");
+                model.addElement(tokens[2].replace("}",""));
+                model2.addElement(tokens[2].replace("}",""));
+                
+                // System.out.println(tokens[2].replace("}",""));
+            }
+            // initialize them to "USD" and "CAD"
+            comboBox.setSelectedIndex(81);
+            comboBox2.setSelectedIndex(13);
+            
+            /************************************************
+            *           Display the exchange rate           *
+            ************************************************/
+            myLabel = new JLabel("Exchange rate is:");
+            add(myLabel); // print out exchange rate
             
             /****************************************************
             *                  Convert Button                   *
@@ -85,6 +125,7 @@ package javaapplication2;
             menu.setMnemonic(KeyEvent.VK_A);
             menu.getAccessibleContext().setAccessibleDescription("Menu");
             menuBar.add(menu); // add menu to panel
+            
             /**************************************************
             *          Create a group of JMenu items          *
             **************************************************/ 
@@ -120,17 +161,6 @@ package javaapplication2;
             exit.addActionListener(this);
           }
           
-	  //=============================================
-	  //////////////////// main /////////////////////
-
-	  public static void main(String[] args) {
-            // create a JFrame instance of our interface
-	    JFrame f = new Interface("Currency Converter");
-	    f.show();  // show interface
-            // show interface
-	    f.show();
-	  } //main
-          
           /******************************************************
           *  Function onExit () no argument, void return value  *
           *  - Cleans Up application                            *
@@ -148,26 +178,70 @@ package javaapplication2;
           *******************************************************/ 
           @Override
           public void actionPerformed(ActionEvent e) {
+
               // if Convert pressed
               if ("Convert".equals(e.getActionCommand())) { 
+                  // get the rate
+                  fromRate.update(from);
+                  double rate = fromRate.get(to, from);
+                  // get the amount the user entered (default to 1 if field empty)
+                  if (convertFromTextField.getText().equals(""))
+                     amount = 1;
+                  else
+                      amount = Double.parseDouble(convertFromTextField.getText());
+                  // get result
+                  double result = amount * rate;
+                  rate = Math.round(rate * 10000);
+                  rate = rate/10000;
+                  myLabel.setText("Exchange rate is: " + rate);
+                  Font font = new Font("Helvetica", Font.ITALIC, 14);
+                  convertToTextField.setFont(font);
+                  convertToTextField.setForeground(Color.darkGray);
+                  convertToTextField.setText(NumberFormat.getNumberInstance().format(result));
                   
               }
               // if Update pressed
               else if ("Update".equals(e.getActionCommand())) 
               {
+                   /** - Read RSS feed for FromCurrency                          **
+                   ** - Build HashMap "ToCurrency/FromCurrency to Exchange Rate */
+                  from = (String)From.getSelectedItem();
+                  fromRate.update(from);
                   
               }
               // if About pressed
               else if ("About".equals(e.getActionCommand())) 
               {
-                  // create and show about dialog 
+                  /** - dialog box containing: App title, your name, "OK" button*/
                   JOptionPane.showMessageDialog(null, info, "About", 1);
               }
-              // if Exit pressed
+             
+              else if ("From".equals(e.getActionCommand())) {
+                  // get value for from drop down menu
+                  From = (JComboBox)e.getSource();
+                  from = (String)From.getSelectedItem();
+              }
+              else if ("To".equals(e.getActionCommand()))
+              {
+                  // get value for to drop down menu
+                  To = (JComboBox)e.getSource();
+                  to = (String)To.getSelectedItem();
+              }
+               // if Exit pressed
               else 
               {
                   onExit(); // calls onExit()
               }
           }
+          
+          //=============================================
+	  //////////////////// main /////////////////////
+
+	  public static void main(String[] args) {
+            // create a JFrame instance of our interface
+              
+	    JFrame f = new Interface("Currency Converter");
+	    f.show();  // show interface
+	  } //main
          
 } //class Panel

@@ -10,6 +10,7 @@ import java.io.*;
 import flexjson.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import static java.sql.DriverManager.println;
 
 
 /**
@@ -21,13 +22,13 @@ public class CCCodes {
     private static String cwd;
     private static final String path = "config.json";
     private static String configFile;
-    
+    public static List stdMap;
     private class CountryCodes {
         String Country;
         String Units;
     }
     
-    private static void readFile (String path) {
+    static void readFile (String path) {
         byte[] rawFile;
         
         try {
@@ -35,12 +36,23 @@ public class CCCodes {
             rawFile = Files.readAllBytes(Paths.get(path));
             configFile = new String(rawFile);
             JSONDeserializer<List<CountryCodes>> deserializer = new JSONDeserializer<List<CountryCodes>> ();
-            List stdMap = deserializer.deserialize(configFile);
-            System.out.println(stdMap);
-            System.out.println(stdMap);
-            System.out.println(stdMap.get(0));
-            System.out.println(); // fill these in
-            System.out.println(); // fill these 
+            stdMap = deserializer.deserialize(configFile);
+            
+            //System.out.println(stdMap);
+            //System.out.println(stdMap);
+           /* for (int i = 0; i < 90; i++)
+            {
+                String[] tokens = stdMap.get(i).toString().split("=");
+               // Panel.model2.addElement(tokens[2].replace("}",""));
+                //System.out.println(tokens[2].replace("}",""));
+                //StringTokenizer splits = new StringTokenizer(stdMap.get(i), "=");
+                //String value = splits.nextToken();
+                //println(value);
+                //System.out.println(stdMap.get(i));
+            }*/
+           
+            //System.out.println(stdMap.get(1)); // fill these in
+            //System.out.println(stdMap.get(2)); // fill these 
             // list of country codes and just returns it
         }
         catch(Exception e)
