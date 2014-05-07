@@ -191,14 +191,15 @@ import java.text.NumberFormat;
                       amount = Double.parseDouble(convertFromTextField.getText());
                   // get result
                   double result = amount * rate;
+                  // round the rate to 4 decimals
                   rate = Math.round(rate * 10000);
                   rate = rate/10000;
+                  // display the rate to screen
                   myLabel.setText("Exchange rate is: " + rate);
+                  // prepare the font and show the result to screen
                   Font font = new Font("Helvetica", Font.ITALIC, 14);
                   convertToTextField.setFont(font);
-                  convertToTextField.setForeground(Color.darkGray);
                   convertToTextField.setText(NumberFormat.getNumberInstance().format(result));
-                  
               }
               // if Update pressed
               else if ("Update".equals(e.getActionCommand())) 
